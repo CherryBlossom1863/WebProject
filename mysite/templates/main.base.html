@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>{{Title}}</title>
+  <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
+  <script src="{% static 'js/nav_bar_switch.js' %}"></script>
+</head>
+<body>
+  <div id = "main_title"class="topnav">
+    <a href="/">SomeTitle</a>
+  </div>
+  
+  <div id = "navigation_bar" class="topnav">
+    <a id="news" href="/" onclick="switchTab(event, 'news')">News</a><!--class="active"-->
+    <a id="politics" href="/politics" onclick="switchTab(event, 'politics')">Politics</a>
+    <a id="business" href="/business" onclick="switchTab(event, 'business')">Business</a>
+    <a id="tech" href="/tech" onclick="switchTab(event, 'tech')">Tech</a>
+    <a id="science" href="/science" onclick="switchTab(event, 'science')">Science</a>
+    <a id="health" href="/health" onclick="switchTab(event, 'health')">Health</a>
+    <a id="sports" href="/sports" onclick="switchTab(event, 'sports')">Sports</a>
+    <a id="arts" href="/arts" onclick="switchTab(event, 'arts')">Arts</a>
+    <a id="food" href="/food" onclick="switchTab(event, 'food')">Food</a>
+    <a id="travel" href="/travel" onclick="switchTab(event, 'travel')">Travel</a>
+    <a id="auth" href="/auth" onclick="switchTab(event, 'auth')">Sign up</a>
+  </div>
+  
+  <main>
+    <h1 class="header">{{Title}}</h1>
+    <hr></hr>
+    {% block content %}{% endblock %}
+  </main>
+
+  <div class="footer">
+    TODO:add footer
+  </div>
+</body>
+</html>

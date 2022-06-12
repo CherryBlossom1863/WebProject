@@ -1,0 +1,44 @@
+{% extends "main.base.html" %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link href="{% static 'css/section.css' %}" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+      <form method="post" accept-charset="UTF-8"> <!--action ="/"-->
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+
+        <p><button type="submit" class = "section-button">
+          Submit</button></p>
+      </form>
+    <p><a class = "section-button" href = "/auth">Sign up</a></p>
+<!--/div-->
+</div>
+</div>
+
+    <script>
+const Name = document.getElementById("name1");
+const Surname = document.getElementById("surname1");
+      
+Name.addEventListener('input', function (event) {
+  if (Name.value.match(/[A-ZА-Я]{2,}/)) {
+    Name.setCustomValidity("Поле может иметь только одну заглавную букву.");
+  }
+});
+
+Surname.addEventListener('input', function (event) {
+  if (Surname.value.match(/[A-ZА-Я]{2,}/)) {
+    Surname.setCustomValidity("Поле может иметь только одну заглавную букву.");
+  }
+});
+    </script>
+  </body>
+</html>
+{% endblock %}

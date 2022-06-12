@@ -1,0 +1,46 @@
+body {
+  width: 100%;
+  background:#F8F9FB;
+  margin: 0vh;
+  line-height: 1;
+  font-family: nyt-cheltenham, georgia, "times new roman", times, serif;
+}
+
+main {
+  padding: 2vh 10vh;
+}
+
+.footer {
+  flex: 0 0 auto;
+}
+
+/* The topbar menu */
+.topnav{
+  width:100%;
+  position: sticky;
+  top: 0vh;
+  display: flex;
+  justify-content: center;
+  font-size: 3vh;
+  z-index: 1;
+  /*padding: 0px 10vh;*/
+  background-color: #3c3939;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  /*padding-top: 5px;*/
+}
+.topnav a {
+  float: left;
+  padding: 6px 8px;
+  text-decoration: none;
+  color: #c5baba;
+  display: block;
+}
+.topnav a:hover {
+  background-color: #F8F9FB;
+  color: black;
+}
+
+.topnav a.active{
+  background-color: #ededed;
+  color: #3c3939;
+}

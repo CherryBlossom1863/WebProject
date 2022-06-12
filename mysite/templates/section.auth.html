@@ -1,0 +1,33 @@
+{% extends "main.base.html" %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link href="{% static 'css/section.css' %}" rel="stylesheet" type="text/css">
+  </head>
+  <style>
+      input:required:valid {
+  border-color: green;
+      }
+      input:required:invalid {
+  border-color: red;
+      }
+    </style>
+  <body>
+      <form method="post" accept-charset="UTF-8"> <!--action ="/"-->  {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+
+        <p><button class = "section-button" type="submit">Submit</button></p>
+
+        <p><a class = "section-button" href = "/register">Create an account</a></p>    
+      </form>
+</div>
+</div>
+  </body>
+</html>
+{% endblock %}
