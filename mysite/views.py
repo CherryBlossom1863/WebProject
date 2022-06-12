@@ -73,3 +73,4 @@ def section_page(request):
     mdict.update(csrf(request))
     html = t.render(mdict)
   return HttpResponse(html)
+
