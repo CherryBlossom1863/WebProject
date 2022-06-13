@@ -9,14 +9,15 @@
     <script src="{% static 'js/main.js' %}"></script>
   </head>
   <body>
-    <ul id="links_list" class="links_list" href="/">
+    <ul id="links_list" class="links_list">
       {% for inf in inf_list %}
         <div class="post">
           <li>
-            <h1>{{inf|get_item:"abstract"}}</h1>
+            <a href="/articles/{{inf|get_item:'web_url'|split_item}}">
+              <h1>{{inf|get_item:"abstract"}}</h1></a>
             <img src="https://www.nytimes.com/{%with inf|get_item:'multimedia' as elem %}{{elem.0|get_item:'url'}}{% endwith %}"></img>
             <p>{{inf|get_item:"lead_paragraph"}}</p>
-            <p>Source:<a class="api_link" href={{inf|get_item:"web_url"}}>New York Times</a></p>
+            <p>Source:<a class="api_link" href="{{inf|get_item:'web_url'}}">New York Times</a></p>
           </li>
         </div>
       {% endfor %}

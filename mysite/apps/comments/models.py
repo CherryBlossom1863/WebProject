@@ -2,8 +2,8 @@ from django.db import models
 import datetime
 
 class Comment(models.Model):
-  login=models.EmailField(default="anonymous")
-  post=models.URLField(max_length=200)
+  login=models.CharField(max_length=200, default="anonymous")
+  url=models.TextField(max_length=200, blank=True)
   creation_date=models.DateField(default=datetime.datetime.now())
   content=models.CharField(max_length=500)
   

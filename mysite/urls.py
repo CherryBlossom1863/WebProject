@@ -15,10 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mysite.views import index
-from mysite.views import auth_page
-from mysite.views import auth_register_page
-from mysite.views import section_page
+from django.conf.urls import url
+from mysite.views import index, auth_page, auth_register_page, section_page, article_page
+
 
 urlpatterns = [
   path('admin/', admin.site.urls),  
@@ -35,5 +34,6 @@ urlpatterns = [
   path('arts/',section_page),
   path('food/',section_page),
   path('travel/',section_page),
+  url(r'articles/.+', article_page),
 ]
 

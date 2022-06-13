@@ -48,14 +48,16 @@ def section_page(request):
   if(req['status'] != 'OK'):
     req = requests.post(url, params = myobj).json()
 
-  #Request to DB for articles list
-  
-  #Saving articles to DB
+  #Saving new articles to DB
   for article in req['response']['docs']:
-    art = Article()
-    art.the_json = article
-    art.url = article['web_url']
-    art.save()
+    try:
+      ref = "/articles/" + str(article['web_url']).split("/",3)[-1]
+      Article.objects.filter(url = ref).get()
+    except Article.DoesNotExist:
+      art = Article()
+      art.the_json = article
+      art.url = ref
+      art.save()
     
   #page render
   t = get_template('section.base.html')
@@ -67,37 +69,29 @@ def section_page(request):
   return HttpResponse(html)
 
 def article_page(request):
-  #request to API
-  if request.method == 'POST':
-    form = CommentInputForm(request.POST)
-    if form.is_valid():
-      form.save()
-    return HttpResponseRedirect('/')
-  else:
-    url = 'https://api.nytimes.com/svc/search/v2/articlesearch.json'
-    myobj = {'api-key': 'k4RmVAZGBrKDDr3AwJS7i6oBfSRyAhmb'}
-    req = requests.post(url, params = myobj).json()
-    if(req['status'] != 'OK'):
-      req = requests.post(url, params = myobj).json()
+  #request to DB for an article
+  ref = '/articles/2022/06/13/business/what-you-should-know-about-bear-markets.html'
+  #str(request.path).split("/",3)[-1]
+  article = Article.objects.filter(url = ref).get(pk=1).the_json
+  #Comments input form
+  form = CommentInputForm()
 
-    #Comments input form
-    form = CommentInputForm()
+  #Comments tree request to DB
+  comments = []
+  web_url = article['web_url']
+  try:
+    com_list = Comment.objects.filter(url = web_url).order_by('creation_date')
+    for com in com_list:
+      comments.append(com)
+  except Comment.DoesNotExist:
+    pass
+    #TODO: no comments
 
-    #Comments tree request to DB
-    comments_ = []
-    for dict in req['response']['docs']:
-      web_url_ = dict['web_url']
-      try:
-        com_list_ = Comment.objects.filter(post = web_url_).get()
-      except Comment.DoesNotExist:
-        com_list_ = []
-      comments_.append(com_list_)
-
-    #page render
-    t = get_template('section.base.html')
-    title = str(request.path).split("/")[-2]
-    title = str.capitalize(title)
-    mdict = {'Title':title, 'inf_list':req['response']['docs'], 'form':form}
-    mdict.update(csrf(request))
-    html = t.render(mdict)
+  #page render
+  t = get_template('section.base.html')
+  title = str(request.path).split("/")[-2]
+  title = str.capitalize(title)
+  mdict = {'Title':title, 'inf_list':article['response']['docs'], 'form':form}
+  mdict.update(csrf(request))
+  html = t.render(mdict)
   return HttpResponse(html)
