@@ -5,6 +5,7 @@ from django.db import models
 import requests
 
 from mysite.apps.comments.models import Comment
+from mysite.apps.articles.models import Article
 from mysite.forms import UserRegisterForm, UserLogInForm, CommentInputForm
 
 
@@ -41,6 +42,32 @@ def auth_register_page(request):
 
 def section_page(request):
   #request to API
+  url = 'https://api.nytimes.com/svc/search/v2/articlesearch.json'
+  myobj = {'api-key': 'k4RmVAZGBrKDDr3AwJS7i6oBfSRyAhmb'}
+  req = requests.post(url, params = myobj).json()
+  if(req['status'] != 'OK'):
+    req = requests.post(url, params = myobj).json()
+
+  #Request to DB for articles list
+  
+  #Saving articles to DB
+  for article in req['response']['docs']:
+    art = Article()
+    art.the_json = article
+    art.url = article['web_url']
+    art.save()
+    
+  #page render
+  t = get_template('section.base.html')
+  title = str(request.path).split("/")[-2]
+  title = str.capitalize(title)
+  mdict = {'Title':title, 'inf_list':req['response']['docs'],}
+  mdict.update(csrf(request))
+  html = t.render(mdict)
+  return HttpResponse(html)
+
+def article_page(request):
+  #request to API
   if request.method == 'POST':
     form = CommentInputForm(request.POST)
     if form.is_valid():
@@ -65,7 +92,8 @@ def section_page(request):
       except Comment.DoesNotExist:
         com_list_ = []
       comments_.append(com_list_)
-    
+
+    #page render
     t = get_template('section.base.html')
     title = str(request.path).split("/")[-2]
     title = str.capitalize(title)
@@ -73,4 +101,3 @@ def section_page(request):
     mdict.update(csrf(request))
     html = t.render(mdict)
   return HttpResponse(html)
-

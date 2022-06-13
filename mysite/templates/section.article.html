@@ -1,0 +1,46 @@
+{% extends "main.base.html" %}
+{% load static %}
+{% block content %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link href="{% static 'css/section.css' %}" rel="stylesheet" type="text/css">
+    <script src="{% static 'js/main.js' %}"></script>
+  </head>
+  <body>
+    <ul id="links_list" class="links_list">
+      <div class="post">
+        <li>
+          <h1>{{inf|get_item:"abstract"}}</h1>
+          <img src="https://www.nytimes.com/{%with inf|get_item:'multimedia' as elem %}{{elem.0|get_item:'url'}}{% endwith %}"></img>
+          <p>{{inf|get_item:"lead_paragraph"}}</p>
+          <p>Source:<a class="api_link" href={{inf|get_item:"web_url"}}>New York Times</a></p>
+          <button class="expand_comment" onclick="showHide('expand_element_{{forloop.counter}}')">Leave comment</button>
+          <div class="expand_element" id="expand_element_{{forloop.counter}}" style="display:none;">
+            <form method="post" accept-charset="UTF-8" class="comment" id="post_id_{{forloop.counter}}">
+              {% csrf_token %}
+              <table>
+                {{ form.as_table }}
+              </table>
+              <p><button type="submit" class = "section-button">Submit</button></p>
+            </form>
+
+            <div class="comments_tree">
+              {% for comment in comments_list %}
+                <h3>{{comment|get_item:"login"}}</h3>
+                <p>{{comment|get_item:"content"}}</p>
+              {% endfor %}
+            </div>
+          </div>
+        </li>
+      </div>
+    </ul>
+
+    <ul id="side_list" class="side_list">
+      <li>TODO:side_list</li>
+    </ul>
+  </body>
+</html>
+{% endblock %}
+    

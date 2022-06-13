@@ -6,14 +6,12 @@ from mysite.apps.comments.models import Comment
 class UserRegisterForm(forms.ModelForm):
   class Meta:
         model = User
-        fields = ['name','surname','age','login','password', 'birth_date',]
+        fields = ['login','password','email','name','surname',]
+  login = forms.CharField(label="login", required=True)
+  email=forms.EmailField(label="Email", widget=forms.EmailInput, required=True)
+  password=forms.CharField(label="Password", widget=forms.PasswordInput, required=True)
   name=forms.CharField(label="Name", required=True)
   surname=forms.CharField(label="Surname", required=True)
-  age=forms.IntegerField(label="Age", required=False, widget=forms.TextInput(
-        attrs={'class': 'form-control', 'min': 0, 'max': 110}))
-  login=forms.EmailField(label="Email", required=True)
-  password=forms.CharField(label="Password", widget=forms.PasswordInput, required=True)
-  birth_date=forms.DateField(label="Birth Date", required=False)
 
 class UserLogInForm(forms.Form):
   login=forms.EmailField(label="Email", required=True)
