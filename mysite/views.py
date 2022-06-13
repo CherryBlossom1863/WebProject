@@ -74,8 +74,13 @@ def article_page(request):
   article_query = Article.objects.filter(url = ref).get()
   article = article_query.the_json
   #Comments input form
-  form = CommentInputForm(ref)
-
+  form = CommentInputForm()
+  if request.method == 'POST':
+    form = CommentInputForm(request.POST)
+    if form.is_valid():
+      instance = form.save(commit=False)
+      instance.url = ref
+      instance.save()
   #Comments tree request to DB
   comments = []
   try:
