@@ -1,7 +1,6 @@
 from django.template.loader import get_template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.context_processors import csrf
-from django.db import models
 import requests
 
 from mysite.apps.comments.models import Comment
@@ -70,17 +69,17 @@ def section_page(request):
 
 def article_page(request):
   #request to DB for an article
-  ref = '/articles/2022/06/13/business/what-you-should-know-about-bear-markets.html'
+  ref = request.path
   #str(request.path).split("/",3)[-1]
-  article = Article.objects.filter(url = ref).get(pk=1).the_json
+  article_query = Article.objects.filter(url = ref).get()
+  article = article_query.the_json
   #Comments input form
-  form = CommentInputForm()
+  form = CommentInputForm(ref)
 
   #Comments tree request to DB
   comments = []
-  web_url = article['web_url']
   try:
-    com_list = Comment.objects.filter(url = web_url).order_by('creation_date')
+    com_list = Comment.objects.filter(url = ref).order_by('creation_date')
     for com in com_list:
       comments.append(com)
   except Comment.DoesNotExist:
@@ -88,10 +87,10 @@ def article_page(request):
     #TODO: no comments
 
   #page render
-  t = get_template('section.base.html')
+  t = get_template('section.article.html')
   title = str(request.path).split("/")[-2]
   title = str.capitalize(title)
-  mdict = {'Title':title, 'inf_list':article['response']['docs'], 'form':form}
+  mdict = {'Title':title, 'inf':article, 'form':form, 'comments_list':comments}
   mdict.update(csrf(request))
   html = t.render(mdict)
   return HttpResponse(html)

@@ -1,4 +1,5 @@
 from django import forms
+
 from mysite.apps.users.models import User
 from mysite.apps.comments.models import Comment
 
@@ -20,6 +21,10 @@ class UserLogInForm(forms.Form):
 class CommentInputForm(forms.ModelForm):
   class Meta:
         model = Comment
-        fields = ['content',]
+        fields = ['content','url']
   content = forms.CharField(label="", required=True)
+  
+  def __init__(self, url, *args, **kwargs):       
+        super(CommentInputForm, self).__init__(*args, **kwargs)
+        self.fields['url'].queryset = url
     

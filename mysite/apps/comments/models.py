@@ -1,10 +1,10 @@
 from django.db import models
-import datetime
+from django.utils.timezone import now
 
 class Comment(models.Model):
   login=models.CharField(max_length=200, default="anonymous")
   url=models.TextField(max_length=200, blank=True)
-  creation_date=models.DateField(default=datetime.datetime.now())
+  creation_date=models.DateField(default = now())
   content=models.CharField(max_length=500)
   
   
