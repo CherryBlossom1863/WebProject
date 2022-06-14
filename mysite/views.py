@@ -84,7 +84,7 @@ def article_page(request):
   #Comments tree request to DB
   comments = []
   try:
-    com_list = Comment.objects.filter(url = ref).order_by('creation_date')
+    com_list = Comment.objects.filter(url = ref).order_by('-creation_date')
     for com in com_list:
       comments.append(com)
   except Comment.DoesNotExist:
@@ -95,7 +95,7 @@ def article_page(request):
   t = get_template('section.article.html')
   title = str(request.path).split("/")[-2]
   title = str.capitalize(title)
-  mdict = {'Title':title, 'inf':article, 'form':form, 'comments_list':comments}
+  mdict = {'Title':title, 'inf':article, 'form':form, 'comments_list':com_list}
   mdict.update(csrf(request))
   html = t.render(mdict)
   return HttpResponse(html)
