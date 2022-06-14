@@ -78,6 +78,10 @@ img{
 }
 
 .post a{
-  font-size: 20px;
+  font-size: 15px;
   text-decoration: none;
+  color: black;
+}
+.post a:hover{
+  color:  #363636;
 }

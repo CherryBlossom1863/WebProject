@@ -70,7 +70,6 @@ def section_page(request):
 def article_page(request):
   #request to DB for an article
   ref = request.path
-  #str(request.path).split("/",3)[-1]
   article_query = Article.objects.filter(url = ref).get()
   article = article_query.the_json
   #Comments input form
@@ -97,5 +96,21 @@ def article_page(request):
   title = str.capitalize(title)
   mdict = {'Title':title, 'inf':article, 'form':form, 'comments_list':com_list}
   mdict.update(csrf(request))
+  html = t.render(mdict)
+  return HttpResponse(html)
+
+def comments_view(request):
+  ref = request.path
+  comments = []
+  try:
+    com_list = Comment.objects.filter(url = ref).order_by('creation_date')
+    for com in com_list:
+      comments.append(com)
+  except Comment.DoesNotExist:
+    pass
+    #TODO: no comments
+
+  t = get_template('section.article.comments.html')
+  mdict = {'comments_list':com_list}
   html = t.render(mdict)
   return HttpResponse(html)

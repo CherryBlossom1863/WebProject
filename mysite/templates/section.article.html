@@ -9,14 +9,11 @@
     <script src="{% static 'js/main.js' %}"></script>
   </head>
   <body>
-    <ul id="links_list" class="links_list">
       <div class="post">
-        <li>
           <h1 class="header">{{inf|get_item:"abstract"}}</h1>
           <img src="https://www.nytimes.com/{%with inf|get_item:'multimedia' as elem %}{{elem.0|get_item:'url'}}{% endwith %}"></img>
           <p>{{inf|get_item:"lead_paragraph"}}</p>
           <p>Source:<a class="api_link" href={{inf|get_item:"web_url"}}>New York Times</a></p>
-        </li>
       </div>
       <button class="expand_comment" onclick="showHide('expand_element_{{forloop.counter}}')">Leave comment</button>
           <div class="expand_element" id="expand_element_{{forloop.counter}}" style="display:none;">
@@ -27,15 +24,8 @@
               </table>
               <p><button type="submit" class = "section-button">Submit</button></p>
             </form>
-            <div class="comments_tree">
-            <p>Recent commentaries</p>
-            {% for comment in comments_list %}
-              <h3>{{comment.login}}</h3>
-              <p>{{comment.content}}</p>
-            {% endfor %}
+            {% include "section.article.comments.html" %}
           </div>
-          </div>
-    </ul>
   </body>
 </html>
 {% endblock %}

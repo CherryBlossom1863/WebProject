@@ -1,0 +1,19 @@
+<div class="comments_tree">
+   <p>Recent commentaries</p>
+      {% for comment in comments_list %}
+        <h3>{{comment.login}}</h3>
+        <p>{{comment.content}}</p>
+      {% endfor %}
+</div>
+<script>
+setInterval(function () {
+    $.ajax({
+        url: "/get_comments/",
+        type: 'POST',
+ 
+        success: function (html) {
+          $('#comments-tree').html(html);
+        }
+    });
+}, 3000);
+</script>

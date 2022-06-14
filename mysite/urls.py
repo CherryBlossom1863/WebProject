@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
-from mysite.views import index, auth_page, auth_register_page, section_page, article_page
+from mysite.views import index, auth_page, auth_register_page, section_page, article_page, comments_view
 
 
 urlpatterns = [
@@ -35,5 +35,7 @@ urlpatterns = [
   path('food/',section_page),
   path('travel/',section_page),
   url(r'articles/.+', article_page),
+  url(r'get_comments/.+',
+    comments_view),
 ]
 
